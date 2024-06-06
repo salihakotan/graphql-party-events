@@ -15,6 +15,9 @@ const typeDefs = gql`
         to:String
         location_id:Int!
         user_id:Int!
+        user:User!
+        location:Location!
+        participants:[Participant!]!
     }
 
     type Location{
@@ -29,12 +32,14 @@ const typeDefs = gql`
         id:Int!
         username:String!
         email:String!
+        events:[Event!]!
     }
 
     type Participant{
         id:Int!
         user_id:Int!
-        event_id:Int!
+        event_id:Int!,
+        user:User!
     }
 
     type Query{
@@ -67,9 +72,24 @@ const resolvers = {
 
 
 
-        participants: ()=> participants
-        
+        participants: ()=> participants,
+        participant: (parent,args) => participants.find((participant)=> participant.id ===args.id)
+
   },
+
+  User: {
+        events: (parent,args)=> events.filter((event)=> event.user_id === parent.id)
+  },
+
+  Event: {
+        user: (parent,args)=> users.find((user)=> user.id === parent.user_id),
+        location: (parent,args) => locations.find((location)=> location.id === parent.location_id),
+        participants: (parent,args)=> participants.filter((participant)=> participant.event_id === parent.id)
+
+  },
+  Participant: {
+    user: (parent,args) => users.find((user)=> user.id === parent.user_id)
+  }
 };
 
 const server = new ApolloServer({
