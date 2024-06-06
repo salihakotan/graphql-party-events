@@ -11,7 +11,6 @@ This project assignment has been prepared for the 'Patika.dev' GraphQL course. A
 ## Query
 
 ```graphql
-{
 query getAllUsers {
   users {
     id
@@ -135,6 +134,5 @@ query getParticipant {
       username
     }
   }
-}
 }
 ```
