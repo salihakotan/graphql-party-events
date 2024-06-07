@@ -12,7 +12,7 @@ query getAllUsers {
 }
 
 query getUser {
-  user(id: "NkIzEjUM-HF3DpNmY2znL") {
+  user(id: "FHD3Yw9eCS8hMB2ag7D3T") {
     id
     username
     email
@@ -55,7 +55,7 @@ query getAllEvents {
 }
 
 query getEvent {
-  event(id: "LGYv8dcQUf12lN97hO_w3") {
+  event(id: "1") {
     id
     title
     desc
@@ -103,7 +103,7 @@ query getAllLocationsShort {
 }
 
 query getLocation {
-  location(id: 2) {
+  location(id: "CPw9_8DRKNHSVzdhYNkrx") {
     id
     name
     desc

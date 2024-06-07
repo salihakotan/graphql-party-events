@@ -9,15 +9,49 @@ mutation addUser{
   }
 }
 
+mutation updateUser{
+  updateUser(id:"FHD3Yw9eCS8hMB2ag7D3T", data:{
+    username:"Sınan(updated name)",
+    email: "sinan@sinansinan.com (updated email)"
+  }) {id, username}
+}
+
+mutation deleteUser{
+  deleteUser(id:"FHD3Yw9eCS8hMB2ag7D3T"){id,username,email}
+}
+
+mutation deleteAllUsers{
+  deleteAllUsers{count}
+}
+
+
 mutation addParticipant{
   addParticipant(data:{
-    user_id:"NkIzEjUM-HF3DpNmY2znL",
-    event_id:"LGYv8dcQUf12lN97hO_w3"
+    user_id:"FHD3Yw9eCS8hMB2ag7D3T",
+    event_id:"b1q47ufpvP1ePQqJcX60e"
   }) {
     id,
     user_id
     event_id
   }
+}
+
+mutation updateParticipant{
+  updateParticipant(id:"SPYrrCcHz8xj2huy_h6Rv", data:{
+    user_id:"1"
+  }) {
+    id,
+    user_id
+    event_id
+  }
+}
+
+mutation deleteParticipant{deleteParticipant(id:"SPYrrCcHz8xj2huy_h6Rv"){
+  id,user{username}
+}}
+
+mutation deleteAllParticipants{
+  deleteAllParticipants{count}
 }
 
 mutation addLocation{
@@ -26,11 +60,32 @@ mutation addLocation{
   }) {id,name}
 }
 
+mutation updateLocation{
+  updateLocation(id:"CPw9_8DRKNHSVzdhYNkrx",data:{
+    name:"Test location (updated name)",
+    desc:"test description for test location (created with update mutation)"
+    lat:-22.4555
+  }) {id, name,desc,lat}
+}
+
+mutation deleteLocation{
+  deleteLocation(id:"CPw9_8DRKNHSVzdhYNkrx"){
+    id,
+    name,
+    desc
+  }
+}
+
+mutation deleteAllLocations{
+  deleteAllLocations{count}
+}
+
+
 mutation addEvent{
   addEvent(data: {
-    title:"second test event for Sinann",
+    title:"first test event for Sinann",
     location_id:"3",
-    user_id:"NkIzEjUM-HF3DpNmY2znL"
+    user_id:"FHD3Yw9eCS8hMB2ag7D3T"
   }) {
     id,
     title,
@@ -39,4 +94,19 @@ mutation addEvent{
     user{id,username}
     location{id,name}
   }
+}
+
+mutation updateEvent{
+  updateEvent(id:"1", data:{
+    title:"Poker night (updated event title)",
+    desc: "Poker night event description (updated desc)"
+  }) {id,title,desc}
+}
+
+mutation deleteEvent{
+  deleteEvent(id:"1"){id,title,desc}
+}
+
+mutation deleteAllEvents{
+  deleteAllEvents{count}
 }
