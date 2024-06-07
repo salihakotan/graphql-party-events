@@ -1,0 +1,42 @@
+mutation addUser{
+  addUser(data: {
+    username:"Sinan",
+    email:"sinannn@email.com",
+  }) {
+    id,
+    username,
+    email
+  }
+}
+
+mutation addParticipant{
+  addParticipant(data:{
+    user_id:"NkIzEjUM-HF3DpNmY2znL",
+    event_id:"LGYv8dcQUf12lN97hO_w3"
+  }) {
+    id,
+    user_id
+    event_id
+  }
+}
+
+mutation addLocation{
+  addLocation(data: {
+    name:"Test location 5"
+  }) {id,name}
+}
+
+mutation addEvent{
+  addEvent(data: {
+    title:"second test event for Sinann",
+    location_id:"3",
+    user_id:"NkIzEjUM-HF3DpNmY2znL"
+  }) {
+    id,
+    title,
+    location_id,
+    user_id,
+    user{id,username}
+    location{id,name}
+  }
+}

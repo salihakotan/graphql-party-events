@@ -4,92 +4,170 @@ const {
 } = require("apollo-server-core");
 const { events, locations, users, participants } = require("./data.json");
 
+const { nanoid } = require("nanoid");
+
 const typeDefs = gql`
+  type Event {
+    id: ID!
+    title: String!
+    desc: String
+    date: String
+    from: String
+    to: String
+    location_id: ID!
+    user_id: ID!
+    user: User!
+    location: Location!
+    participants: [Participant!]!
+  }
 
-    type Event {
-        id:Int!
-        title:String!
-        desc:String!
-        date:String!
-        from:String
-        to:String
-        location_id:Int!
-        user_id:Int!
-        user:User!
-        location:Location!
-        participants:[Participant!]!
-    }
+  input AddEventInput {
+    title: String!
+    desc: String
+    date: String
+    from: String
+    to: String
+    location_id: ID!
+    user_id: ID!
+  }
 
-    type Location{
-        id:Int!
-        name:String!
-        desc:String
-        lat:Float
-        lng:Float
-    }
+  type Location {
+    id: ID!
+    name: String!
+    desc: String
+    lat: Float
+    lng: Float
+  }
 
-    type User{
-        id:Int!
-        username:String!
-        email:String!
-        events:[Event!]!
-    }
+  input AddLocationInput {
+    name: String!
+    desc: String
+    lat: Float
+    lng: Float
+  }
 
-    type Participant{
-        id:Int!
-        user_id:Int!
-        event_id:Int!,
-        user:User!
-    }
+  type User {
+    id: ID!
+    username: String!
+    email: String!
+    events: [Event!]!
+  }
 
-    type Query{
-        events: [Event!]!
-        event(id:Int!): Event!
+  input AddUserInput {
+    username: String!
+    email: String!
+  }
 
-        locations: [Location!]!
-        location(id:Int!): Location!
+  type Participant {
+    id: ID!
+    user_id: ID!
+    event_id: ID!
+    user: User!
+  }
 
-        users:[User!]!
-        user(id:Int!): User!
+  input AddParticipantInput {
+    user_id: ID!
+    event_id: ID!
+  }
 
+  type Query {
+    events: [Event!]!
+    event(id: ID!): Event!
 
-        participants: [Participant!]!
-        participant(id:Int!): Participant!
-    }
+    locations: [Location!]!
+    location(id: ID!): Location!
 
+    users: [User!]!
+    user(id: ID!): User!
+
+    participants: [Participant!]!
+    participant(id: ID!): Participant!
+  }
+
+  type Mutation {
+    addUser(data: AddUserInput!): User!
+    addParticipant(data: AddParticipantInput!): Participant!
+    addEvent(data: AddEventInput!): Event!
+    addLocation(data: AddLocationInput!): Location!
+  }
 `;
 
 const resolvers = {
+  Mutation: {
+    addUser: (parent, { data }) => {
+      const user = {
+        id: nanoid(),
+        ...data,
+      };
+      users.push(user);
+      return user;
+    },
+
+    addParticipant: (parent, { data }) => {
+      const participant = {
+        id: nanoid(),
+        ...data,
+      };
+
+      participants.push(participant);
+
+      return participant;
+    },
+
+    addLocation: (parent, { data }) => {
+      const location = {
+        id: nanoid(),
+        ...data,
+      };
+
+      locations.push(location);
+
+      return location;
+    },
+
+    addEvent: (parent, { data }) => {
+      const event = {
+        id: nanoid(),
+        ...data,
+      };
+
+      events.push(event);
+
+      return event;
+    },
+  },
+
   Query: {
-        events: ()=> events,
-        event: (parent,args) => events.find((event)=> event.id=== args.id),
+    events: () => events,
+    event: (parent, args) => events.find((event) => event.id == args.id),
 
-        locations: ()=> locations,
-        location:(parent,args)=> locations.find((location)=> location.id ===args.id),
+    locations: () => locations,
+    location: (parent, args) =>
+      locations.find((location) => location.id == args.id),
 
-        users: ()=> users,
-        user:(parent,args)=> users.find((user)=> user.id == args.id),
+    users: () => users,
+    user: (parent, args) => users.find((user) => user.id == args.id),
 
-
-
-        participants: ()=> participants,
-        participant: (parent,args) => participants.find((participant)=> participant.id ===args.id)
-
+    participants: () => participants,
+    participant: (parent, args) =>
+      participants.find((participant) => participant.id == args.id),
   },
 
   User: {
-        events: (parent,args)=> events.filter((event)=> event.user_id === parent.id)
+    events: (parent, args) =>
+      events.filter((event) => event.user_id == parent.id),
   },
 
   Event: {
-        user: (parent,args)=> users.find((user)=> user.id === parent.user_id),
-        location: (parent,args) => locations.find((location)=> location.id === parent.location_id),
-        participants: (parent,args)=> participants.filter((participant)=> participant.event_id === parent.id)
-
+    user: (parent, args) => users.find((user) => user.id == parent.user_id),
+    location: (parent, args) =>
+      locations.find((location) => location.id == parent.location_id),
+    participants: (parent, args) =>
+      participants.filter((participant) => participant.event_id == parent.id),
   },
   Participant: {
-    user: (parent,args) => users.find((user)=> user.id === parent.user_id)
-  }
+    user: (parent, args) => users.find((user) => user.id == parent.user_id),
+  },
 };
 
 const server = new ApolloServer({
