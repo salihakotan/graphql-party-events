@@ -1,34 +1,17 @@
-const {
-  ApolloServerPluginLandingPageGraphQLPlayground,
-} = require("apollo-server-core");
+
 
 const { createServer } = require("node:http");
 const { createSchema, createYoga } = require("graphql-yoga");
+const {PubSub} = require("graphql-subscriptions")
 
 const { events, locations, users, participants } = require("./data.json");
 
 const { nanoid } = require("nanoid");
 
+const pubsub = new PubSub()
+
+
 const yoga = createYoga({
-  renderGraphiQL: () => {
-    return `
-      <!DOCTYPE html>
-      <html lang="en">
-        <body style="margin: 0; overflow-x: hidden; overflow-y: hidden">
-        <div id="sandbox" style="height:100vh; width:100vw;"></div>
-        <script src="https://embeddable-sandbox.cdn.apollographql.com/_latest/embeddable-sandbox.umd.production.min.js"></script>
-        <script>
-        new window.EmbeddedSandbox({
-          target: "#sandbox",
-          // Pass through your server href if you are embedding on an endpoint.
-          // Otherwise, you can pass whatever endpoint you want Sandbox to start up with here.
-          initialEndpoint: "http://localhost:3000/graphql",
-        });
-        // advanced options: https://www.apollographql.com/docs/studio/explorer/sandbox#embedding-sandbox
-        </script>
-        </body>
-      </html>`
-  },
    graphqlEndpoint:"/",
   schema: createSchema({
     typeDefs: /* GraphQL */ `
@@ -160,16 +143,26 @@ const yoga = createYoga({
         updateLocation(id: ID!, data: UpdateLocationInput!): Location!
         deleteLocation(id: ID!): Location!
         deleteAllLocations: DeleteAllOutput!
+      },
+
+      type Subscription{
+          userCreated:User!
+          eventCreated:Event!
+          participantAttended:Participant!
       }
     `,
-
-    plugins: [
-      ApolloServerPluginLandingPageGraphQLPlayground({
-        //options
-      }),
-    ],
-
     resolvers: {
+      Subscription:{
+        userCreated:{
+          subscribe: (_,__) => pubsub.asyncIterator("userCreated")
+        },
+        eventCreated:{
+          subscribe: (_,__) => pubsub.asyncIterator("eventCreated")
+        },
+        participantAttended:{
+          subscribe: (_,__) => pubsub.asyncIterator("participantAttended")
+        },
+      },
       Mutation: {
         addUser: (parent, { data }) => {
           const user = {
@@ -177,6 +170,7 @@ const yoga = createYoga({
             ...data,
           };
           users.push(user);
+          pubsub.publish("userCreated", {userCreated:user})
           return user;
         },
 
@@ -224,7 +218,7 @@ const yoga = createYoga({
           };
 
           participants.push(participant);
-
+          pubsub.publish("participantAttended", {participantAttended: participant})
           return participant;
         },
         updateParticipant: (parent, { id, data }) => {
@@ -322,7 +316,7 @@ const yoga = createYoga({
           };
 
           events.push(event);
-
+          pubsub.publish("eventCreated", {eventCreated: event})
           return event;
         },
         updateEvent: (parent, { id, data }) => {

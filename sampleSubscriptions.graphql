@@ -1,0 +1,11 @@
+subscription userCreated{
+  userCreated{id,username}
+}
+
+subscription eventCreated{
+  eventCreated{id,title}
+}
+
+subscription participantAttended{
+  participantAttended{id,user{username,email}}
+}
