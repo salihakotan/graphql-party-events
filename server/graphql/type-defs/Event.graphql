@@ -1,0 +1,33 @@
+type Event {
+        id: ID!
+        title: String!
+        desc: String
+        date: String
+        from: String
+        to: String
+        location_id: ID!
+        user_id: ID!
+        user: User!
+        location: Location!
+        participants: [Participant!]!
+      }
+
+      input AddEventInput {
+        title: String!
+        desc: String
+        date: String
+        from: String
+        to: String
+        location_id: ID!
+        user_id: ID!
+      }
+
+      input UpdateEventInput {
+        title: String
+        desc: String
+        date: String
+        from: String
+        to: String
+        location_id: ID
+        user_id: ID
+      }
