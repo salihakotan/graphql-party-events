@@ -31,3 +31,21 @@ type Event {
         location_id: ID
         user_id: ID
       }
+
+
+
+      type Query {
+        events: [Event!]!
+        event(id: ID!): Event!
+      }
+
+      type Mutation {
+        addEvent(data: AddEventInput!): Event!
+        updateEvent(id: ID!, data: UpdateEventInput!): Event!
+        deleteEvent(id: ID!): Event!
+        deleteAllEvents: DeleteAllOutput!
+      },
+
+      type Subscription{
+          eventCreated:Event!
+      }
