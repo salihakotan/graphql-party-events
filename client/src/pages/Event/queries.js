@@ -7,6 +7,17 @@ query getEvent($id:ID!){
     title
     desc
     date
+    location{
+        name
+    }
+    user{
+        username
+    }
+    participants{
+        user{
+            username
+        }
+    }
   }
 }
 `
