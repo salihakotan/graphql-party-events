@@ -1,3 +1,31 @@
 body {
-  background-color: rgb(233, 208, 177);
+  background-color: rgb(67, 67, 67);
+}
+.ant-menu{
+  background: none;
+  border:2px solid #ff00aa;
+  border-bottom: 2px solid #530037!important
+}
+
+.ant-menu-item-selected{
+  background-color: #ff7cd3!important;
+  font-weight: bold;
+  color: #45002e!important;
+}
+
+.ant-list-item-meta-title{
+  font-size: 18px!important;
+}
+
+.ant-list-item-meta-title > a:hover{
+  color:#ff00aa!important;
+}
+
+
+.ant-list-item-meta-description > a{
+  color:#737373;
+}
+
+.ant-list-item-meta-description > a:hover{
+  color: #1a1a1a;
 }
