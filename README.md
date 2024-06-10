@@ -4,4 +4,9 @@ This project assignment has been prepared for the 'Kodluyoruz' GraphQL course. A
 
 ---
 
-![preview](prev.png)
+![preview](prev1.png)
+
+---
+
+![preview](prev2.png)
+
