@@ -10,3 +10,6 @@ This project assignment has been prepared for the 'Kodluyoruz' GraphQL course. A
 
 ![preview](prev2.png)
 
+---
+
+![preview3](prev3.png)
