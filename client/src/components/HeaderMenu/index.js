@@ -31,8 +31,13 @@ function HeaderMenu() {
  
 
     const active = items.find((item)=> item.path === location.pathname)
+  
+    if(active) {
+      return active.key
+    }
+    return "events"
 
-    return active.key
+   
   }
 
 

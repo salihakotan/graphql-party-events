@@ -9,8 +9,6 @@ import { useNavigate } from "react-router-dom";
 
 function NewEvent() {
 
-    const dateFormat = 'YYYY/MM/DD';
-
 
   const [saveEvent, { loading  }] = useMutation(NEW_EVENT_MUTATION);
 
@@ -24,9 +22,12 @@ function NewEvent() {
     console.log(values);
 
     try {
-       saveEvent({
+        saveEvent({
         variables: {
-          data:values
+          data:{
+            ...values,
+            date:values["date"].format("YYYY-MM-DD")
+          }
         },
       });
 
@@ -75,7 +76,7 @@ function NewEvent() {
             },
           ]}
         >
-          <DatePicker format={dateFormat} disabled={loading}  placeholder="Select date" />
+          <DatePicker disabled={loading}  placeholder="Select date" />
         </Form.Item>
         <Form.Item
           name="location_id"
