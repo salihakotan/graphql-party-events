@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { Menu } from 'antd';
 
@@ -7,12 +7,14 @@ import { Menu } from 'antd';
 const items = [
   {
     key: 'events',
+    path:"/",
     label: (
       <Link to="/">Events</Link>
     ),
   },
   {
     key: 'newEvent',
+    path:"/newEvent",
     label: (
       <Link to="/newEvent">New Event</Link>
     ),
@@ -20,16 +22,23 @@ const items = [
 ];
 function HeaderMenu() {
 
-  const [current, setCurrent] = useState('events');
+
+  const location = useLocation();
+
+  console.log("location", location)
+
+  const getAssociatedPaths = () => {
+ 
+
+    const active = items.find((item)=> item.path === location.pathname)
+
+    return active.key
+  }
 
 
-  const onClick = (e) => {
-    console.log('click ', e);
-    setCurrent(e.key);
-  };
 
   return (
-    <Menu theme='dark' onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items}
+    <Menu theme='dark' selectedKeys={getAssociatedPaths()} mode="horizontal" items={items}
  />
   )
 }
