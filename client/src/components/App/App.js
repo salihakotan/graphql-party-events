@@ -4,6 +4,7 @@ import Home from "../../pages/Home";
 import Event from "../../pages/Event";
 import { Col, Row } from "antd";
 import HeaderMenu from "../HeaderMenu";
+import NewEvent from "../../pages/NewEvent";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/event/:id" element={<Event />} />
+          <Route path="/newEvent" element={<NewEvent />} />
         </Routes>
         </div>
       </Col>
