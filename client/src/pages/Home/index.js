@@ -26,7 +26,8 @@ function Home() {
         subscribeToMore({
           document:EVENTS_SUBSCRIPTION,
           updateQuery: (prev, {subscriptionData}) => {
-            if(!subscriptionData.data) return prev
+            console.log("prev ", prev)
+            if(!subscriptionData.data) return prev.events
 
             return {
               events:[
@@ -56,7 +57,7 @@ function Home() {
         itemLayout="horizontal"
         dataSource={data.events}
         renderItem={(item, index) => (
-          <List.Item>
+          <List.Item key={index}>
             <List.Item.Meta
               title={<Link to={`/event/${item.id}`}>{item.title}</Link>}
               description={<Link to={`/event/${item.id}`}>{truncateDescription(item.desc)}</Link>}

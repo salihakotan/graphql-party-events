@@ -22,6 +22,7 @@ function HeaderMenu() {
 
   const [current, setCurrent] = useState('events');
 
+
   const onClick = (e) => {
     console.log('click ', e);
     setCurrent(e.key);
