@@ -54,7 +54,7 @@ export const Mutation = {
         ...data,
       };
 
-      db.participants.push(participant);
+      db.participants.unshift(participant);
       pubsub.publish("participantAttended", {participantAttended: participant})
       return participant;
     },
@@ -152,7 +152,7 @@ export const Mutation = {
         ...data,
       };
 
-      db.events.push(event);
+      db.events.unshift(event);
       pubsub.publish("eventCreated", {eventCreated: event})
       return event;
     },

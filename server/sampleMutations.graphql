@@ -1,6 +1,6 @@
 mutation addUser{
   addUser(data: {
-    username:"Sinan",
+    username:"Sinaaan",
     email:"sinannn@email.com",
   }) {
     id,
@@ -83,9 +83,10 @@ mutation deleteAllLocations{
 
 mutation addEvent{
   addEvent(data: {
-    title:"first test event for Sinann",
+    title:"EVENT 11",
+    desc:"EVENT DESCRIPTION"
     location_id:"3",
-    user_id:"FHD3Yw9eCS8hMB2ag7D3T"
+    user_id:"1"
   }) {
     id,
     title,

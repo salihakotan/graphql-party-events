@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import HeaderMenu from "./HeaderMenu";
 import styles from "./styles.module.css";
 import Home from "../../pages/Home";
 import Event from "../../pages/Event";
 import { Col, Row } from "antd";
+import HeaderMenu from "../HeaderMenu";
 
 function App() {
   return (

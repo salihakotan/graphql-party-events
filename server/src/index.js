@@ -7,7 +7,7 @@ import {db} from "./db";
 
 import {WebSocketServer} from "ws"
 
-import {userServer} from "graphql-ws/lib/use/ws"
+import {useServer} from "graphql-ws/lib/use/ws"
 
 const pubsub = new PubSub()
 
@@ -16,6 +16,7 @@ const yoga = createYoga({
     graphiql:{
       subscriptionsProtocol: "WS"
     },
+    
    graphqlEndpoint:"/",
   
   schema: createSchema({
@@ -33,7 +34,7 @@ const server = createServer(yoga);
 
 const wsServer = new WebSocketServer({
   server:server,
-  path:graphqlEndpoint
+  path:yoga.graphqlEndpoint
 })
 
 // Integrate Yoga's Envelop instance and NodeJS server with graphql-ws
@@ -43,7 +44,7 @@ useServer(
     subscribe: (args) => args.rootValue.subscribe(args),
     onSubscribe: async (ctx, msg) => {
       const { schema, execute, subscribe, contextFactory, parse, validate } =
-        yogaApp.getEnveloped({
+        yoga.getEnveloped({
           ...ctx,
           req: ctx.extra.request,
           socket: ctx.extra.socket,
