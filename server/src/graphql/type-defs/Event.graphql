@@ -18,8 +18,10 @@ type Event {
         date: String
         from: String
         to: String
-        location_id: ID!
-        user_id: ID!
+        location:Location!
+        user:User!
+        # location_id: ID!
+        # user_id: ID!
       }
 
       input UpdateEventInput {
@@ -28,8 +30,8 @@ type Event {
         date: String
         from: String
         to: String
-        location_id: ID
-        user_id: ID
+         location:Location!
+        user:User!
       }
 
 
