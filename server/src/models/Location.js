@@ -7,7 +7,7 @@ const LocationSchema = new Schema({
         isRequired:true
     },
     desc:String,
-    let:Number,
+    lat:Number,
     lng:Number,
 }
 )

@@ -27,6 +27,7 @@ function Participants({ event_id }) {
               ...prev.event,
               participants: [
                 subscriptionData.data.participantAttended,
+                
                 ...prev.event.participants,
               ],
             },

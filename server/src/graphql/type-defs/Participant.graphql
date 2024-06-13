@@ -1,7 +1,5 @@
 type Participant {
         id: ID!
-        # user_id: ID!
-        # event_id: ID!
         user: User!
         event:Event!
       }
@@ -31,4 +29,5 @@ type Participant {
 
       type Subscription{
           participantAttended:Participant!
+          participantDeleted:Participant!
       }

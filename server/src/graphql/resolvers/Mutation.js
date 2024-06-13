@@ -52,6 +52,15 @@ export const Mutation = {
 
       const participant = await newParticipant.save()
 
+      //which event -> have must add to that array's participants -> event.participants.push(participant) 
+      const event = await db.Event.findById(data.event)
+      event.participants.push(participant)
+      await event.save()
+
+       
+      // addToEvent.save()
+     
+
       pubsub.publish("participantAttended", {participantAttended: participant})
       return participant;
     },
@@ -73,8 +82,22 @@ export const Mutation = {
         throw new Error("participant not found");
       }
 
+      const will_delete_participant = await db.Participant.findById(id)
+
+      // console.log("willdelete participant ********* ", will_delete_participant)
+      // console.log("EVENT: willdelete participant ********* ", )
+
+
+      const eventt = await db.Event.findById(will_delete_participant.event)
+     
+
+      eventt.participants.splice(will_delete_participant,1)
+      await eventt.save()
+
       const deleted_participant = await db.Participant.findByIdAndDelete(id)
 
+
+      // pubsub.publish("participantAttended", {participantAttended: deleted_participant})
 
       return deleted_participant;
     },
@@ -106,6 +129,7 @@ export const Mutation = {
         new:true
       })
 
+
       return updated_location;
     },
     deleteLocation: async(parent, { id },{db,pubsub}) => {
@@ -135,6 +159,10 @@ export const Mutation = {
 
       const event = await newEvent.save()
 
+      const user = await db.User.findById(data.user)
+      user.events.push(event)
+      await user.save()
+
       pubsub.publish("eventCreated", {eventCreated: event})
       return event;
     },
@@ -144,7 +172,9 @@ export const Mutation = {
         throw new Error("event not found");
       }
 
-      const updated_event = await db.Event.findByIdAndUpdate(id)
+      const updated_event = await db.Event.findByIdAndUpdate(id,data,{
+        new:true
+      })
 
       return updated_event;
     },
@@ -154,8 +184,22 @@ export const Mutation = {
         throw new Error("event not found");
       }
 
+      const will_delete_event = await db.Event.findById(id)
+
+      const userr = await db.User.findById(will_delete_event.user)
+
+
+      userr.events.splice(will_delete_event,1)
+      await userr.save()
+
+
       const deleted_event = await db.Event.findByIdAndDelete(id)
 
+     
+
+
+      
+      // pubsub.publish("eventDeleted", {eventDeleted: deleted_event})
 
       return deleted_event;
     },

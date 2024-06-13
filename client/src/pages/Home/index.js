@@ -32,6 +32,7 @@ function Home() {
             return {
               events:[
                 subscriptionData.data.eventCreated,
+                
                 ...prev.events
               ]
             }
