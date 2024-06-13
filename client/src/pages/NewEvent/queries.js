@@ -6,8 +6,6 @@ mutation addEvent($data:AddEventInput!){
   addEvent(data:$data) {
     id,
     title,
-    location_id,
-    user_id,
     user{id,username}
     location{id,name}
   }

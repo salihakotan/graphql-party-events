@@ -52,6 +52,15 @@ export const Mutation = {
 
       const participant = await newParticipant.save()
 
+      //which event -> have must add to that array's participants -> event.participants.push(participant) 
+      const event = await db.Event.findById(data.event)
+      event.participants.push(participant)
+      await event.save()
+
+       
+      // addToEvent.save()
+     
+
       pubsub.publish("participantAttended", {participantAttended: participant})
       return participant;
     },
@@ -67,14 +76,17 @@ export const Mutation = {
 
       return updated_participant;
     },
-    deleteParticipant: async(parent, { id },{db,pubsub}) => {
-      const participant_index = await db.Participant.findById(id);
+    deleteParticipant: async(parent, { data },{db,pubsub}) => {
+      const participant_index = await db.Participant.findById(data.id);
       if (!participant_index) {
         throw new Error("participant not found");
       }
 
-      const deleted_participant = await db.Participant.findByIdAndDelete(id)
+      const deleted_participant = await db.Participant.findByIdAndDelete(data.id)
 
+      const event = await db.Event.findById(data.event)
+      event.participants.splice(deleted_participant,1)
+      await event.save()
 
       return deleted_participant;
     },
@@ -82,6 +94,7 @@ export const Mutation = {
       
       const delete_participants = await db.Participant.deleteMany({})
 
+      
       return {
         count: delete_participants.deletedCount,
       };
@@ -105,6 +118,7 @@ export const Mutation = {
       const updated_location =  await db.Location.findByIdAndUpdate(id,data,{
         new:true
       })
+
 
       return updated_location;
     },
@@ -135,6 +149,10 @@ export const Mutation = {
 
       const event = await newEvent.save()
 
+      const user = await db.User.findById(data.user)
+      user.events.push(event)
+      await user.save()
+
       pubsub.publish("eventCreated", {eventCreated: event})
       return event;
     },
@@ -144,18 +162,23 @@ export const Mutation = {
         throw new Error("event not found");
       }
 
-      const updated_event = await db.Event.findByIdAndUpdate(id)
+      const updated_event = await db.Event.findByIdAndUpdate(id,data,{
+        new:true
+      })
 
       return updated_event;
     },
-    deleteEvent:async (parent, { id },{db,pubsub}) => {
-      const event_index = await db.Event.findById(id)
+    deleteEvent:async (parent, { data },{db,pubsub}) => {
+      const event_index = await db.Event.findById(data.id)
       if (!event_index) {
         throw new Error("event not found");
       }
 
-      const deleted_event = await db.Event.findByIdAndDelete(id)
+      const deleted_event = await db.Event.findByIdAndDelete(data.id)
 
+      const user = await db.User.findById(data.user)
+      user.events.splice(deleted_event,1)
+      await user.save()
 
       return deleted_event;
     },

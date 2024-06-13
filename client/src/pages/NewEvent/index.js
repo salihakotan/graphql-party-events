@@ -79,7 +79,7 @@ function NewEvent() {
           <DatePicker disabled={loading}  placeholder="Select date" />
         </Form.Item>
         <Form.Item
-          name="location_id"
+          name="location"
           rules={[
             {
               required: true,
@@ -94,7 +94,7 @@ function NewEvent() {
           </Select>
         </Form.Item>
         <Form.Item
-          name="user_id"
+          name="user"
           rules={[
             {
               required: true,
