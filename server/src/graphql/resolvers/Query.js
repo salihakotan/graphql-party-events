@@ -1,15 +1,13 @@
 export const Query ={
-    events: async(_,__,{db}) => db.Event.find(),
-    event: (parent, args,{db}) => db.events.find((event) => event.id == args.id),
+    events: async(_,__,{db}) => await db.Event.find(),
+    event: async(parent, args,{db}) => await db.Event.findById(args.id),
 
-    locations: (_,__,{db}) => db.locations,
-    location: (parent, args,{db}) =>
-      db.locations.find((location) => location.id == args.id),
+    locations: async(_,__,{db}) => await db.Location.find(),
+    location: async(parent, args,{db}) =>await db.Location.findById(args.id),
 
-    users: (_,__,{db}) => db.users,
-    user: (parent, args,{db}) => db.users.find((user) => user.id == args.id),
+    users: async(_,__,{db}) => await db.User.find(),
+    user: async(parent, args,{db}) => await db.User.findById(args.id),
 
-    participants: (_,__,{db}) => db.participants,
-    participant: (parent, args,{db}) =>
-      db.participants.find((participant) => participant.id == args.id),
+    participants: async(_,__,{db}) => await db.Participant.find(),
+    participant: async(parent, args,{db}) => await db.Participant.findById(args.id)
   }
