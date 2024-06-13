@@ -7,8 +7,8 @@ const LocationSchema = new Schema({
         isRequired:true
     },
     desc:String,
-    let:Float32Array,
-    lng:Float32Array,
+    let:Number,
+    lng:Number,
 }
 )
 

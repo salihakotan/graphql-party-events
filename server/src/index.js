@@ -17,6 +17,9 @@ import mongodb from "./mongodb";
 mongodb()
 
 import User from "./models/User";
+import Participant from "./models/Participant";
+import Location from "./models/Location";
+import Event from "./models/Event";
 
 
 const yoga = createYoga({
@@ -35,8 +38,10 @@ const yoga = createYoga({
     db,
     pubsub,
     _db:{
-      User,
-      
+      Event,
+      Location,
+      Participant,
+      User
     }
    },
 });
