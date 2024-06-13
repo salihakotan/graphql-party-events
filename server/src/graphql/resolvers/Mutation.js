@@ -1,193 +1,170 @@
 import { nanoid } from "nanoid";
 
 export const Mutation = {
-    addUser: (parent, { data },{db,pubsub}) => {
-      const user = {
-        id: nanoid(),
-        ...data,
-      };
-      db.users.push(user);
+    addUser: async(parent, { data },{db,pubsub}) => {
+      const newUser = new db.User({
+        ...data
+      })
+
+      const user = await newUser.save()
+
       pubsub.publish("userCreated", {userCreated:user})
       return user;
     },
 
-    updateUser: (parent, { id, data },{db,pubsub}) => {
-      const user_index = db.users.findIndex((user) => user.id == id);
-      if (user_index === -1) {
+    updateUser: async(parent, { id, data },{db,pubsub}) => {
+      const user_index = await db.User.findById(id);
+      if (!user_index) {
         throw new Error("User not found");
       }
 
-      const updated_user = (db.users[user_index] = {
-        ...db.users[user_index],
-        ...data,
-      });
+      const updated_user = await db.User.findByIdAndUpdate(id,data,{
+        new:true
+      })
 
       return updated_user;
     },
 
-    deleteUser: (parent, { id },{db,pubsub}) => {
-      const user_index = db.users.findIndex((user) => user.id == id);
-      if (user_index === -1) {
+    deleteUser: async(parent, { id },{db,pubsub}) => {
+      const user_index = await db.User.findById(id);
+      if (!user_index) {
         throw new Error("User not found");
       }
 
-      const deleted_user = db.users[user_index];
+      const deleted_user = await db.User.findByIdAndDelete(id)
 
-      db.users.splice(user_index, 1);
 
       return deleted_user;
     },
 
-    deleteAllUsers: (_,__,{db,pubsub}) => {
-      const length = db.users.length;
-
-      db.users.splice(0, length);
+    deleteAllUsers: async(_,__,{db,pubsub}) => {
+      const delete_users = await db.User.deleteMany({})
 
       return {
-        count: length,
+        count: delete_users.deletedCount,
       };
     },
 
-    addParticipant: (parent, { data },{db,pubsub}) => {
-      const participant = {
-        id: nanoid(),
-        ...data,
-      };
+    addParticipant: async(parent, { data },{db,pubsub}) => {
+      const newParticipant = new db.Participant({
+        ...data
+      })
 
-      db.participants.unshift(participant);
+      const participant = await newParticipant.save()
+
       pubsub.publish("participantAttended", {participantAttended: participant})
       return participant;
     },
-    updateParticipant: (parent, { id, data },{db,pubsub}) => {
-      const participant_index = db.participants.findIndex(
-        (participant) => participant.id == id
-      );
-      if (participant_index === -1) {
+    updateParticipant: async(parent, { id, data },{db,pubsub}) => {
+      const participant_index = await db.Participant.findById(id);
+      if (!participant_index) {
         throw new Error("participant not found");
       }
 
-      const updated_participant = (db.participants[participant_index] = {
-        ...db.participants[participant_index],
-        ...data,
-      });
+      const updated_participant = await db.Participant.findByIdAndUpdate(id,data,{
+        new:true
+      })
 
       return updated_participant;
     },
-    deleteParticipant: (parent, { id },{db,pubsub}) => {
-      const participant_index = db.participants.findIndex(
-        (participant) => participant.id == id
-      );
-      if (participant_index === -1) {
+    deleteParticipant: async(parent, { id },{db,pubsub}) => {
+      const participant_index = await db.Participant.findById(id);
+      if (!participant_index) {
         throw new Error("participant not found");
       }
 
-      const deleted_participant = db.participants[participant_index];
+      const deleted_participant = await db.Participant.findByIdAndDelete(id)
 
-      db.participants.splice(participant_index, 1);
 
       return deleted_participant;
     },
-    deleteAllParticipants: (_,__,{db,pubsub}) => {
-      const length = db.participants.length;
-
-      db.participants.splice(0, length);
+    deleteAllParticipants:async (_,__,{db,pubsub}) => {
+      
+      const delete_participants = await db.Participant.deleteMany({})
 
       return {
-        count: length,
+        count: delete_participants.deletedCount,
       };
     },
 
-    addLocation: (parent, { data },{db,pubsub}) => {
-      const location = {
-        id: nanoid(),
-        ...data,
-      };
+    addLocation: async(parent, { data },{db,pubsub}) => {
+      const newLocation = new db.Location({
+        ...data
+      })
 
-      db.locations.push(location);
-
+      const location = await newLocation.save()
+      
       return location;
     },
-    updateLocation: (parent, { id, data },{db,pubsub}) => {
-      const location_index = db.locations.findIndex(
-        (location) => location.id == id
-      );
-      if (location_index === -1) {
+    updateLocation: async(parent, { id, data },{db,pubsub}) => {
+      const location_index = await db.Location.findById(id)
+      if (!location_index) {
         throw new Error("location not found");
       }
 
-      const updated_location = (db.locations[location_index] = {
-        ...db.locations[location_index],
-        ...data,
-      });
+      const updated_location =  await db.Location.findByIdAndUpdate(id,data,{
+        new:true
+      })
 
       return updated_location;
     },
-    deleteLocation: (parent, { id },{db,pubsub}) => {
-      const location_index = db.locations.findIndex(
-        (location) => location.id == id
-      );
-      if (location_index === -1) {
+    deleteLocation: async(parent, { id },{db,pubsub}) => {
+      const location_index = await db.Location.findById(id)
+      if (!location_index) {
         throw new Error("location not found");
       }
 
-      const deleted_location = db.locations[location_index];
+      const deleted_location = await db.Location.findByIdAndDelete(id)
 
-      db.locations.splice(location_index, 1);
 
       return deleted_location;
     },
-    deleteAllLocations: (_,__,{db,pubsub}) => {
-      const length = db.locations.length;
+    deleteAllLocations: async(_,__,{db,pubsub}) => {
 
-      db.locations.splice(0, length);
+      const delete_locations = await db.Location.deleteMany({})
 
       return {
-        count: length,
+        count: delete_locations.deletedCount,
       };
     },
 
-    addEvent: (parent, { data },{db,pubsub}) => {
-      const event = {
-        id: nanoid(),
-        ...data,
-      };
+    addEvent:async (parent, { data },{db,pubsub}) => {
+      const newEvent = new db.Event({
+          ...data
+      })
 
-      db.events.unshift(event);
+      const event = await newEvent.save()
+
       pubsub.publish("eventCreated", {eventCreated: event})
       return event;
     },
-    updateEvent: (parent, { id, data },{db,pubsub}) => {
-      const event_index = db.events.findIndex((event) => event.id == id);
-      if (event_index === -1) {
+    updateEvent: async(parent, { id, data },{db,pubsub}) => {
+      const event_index = await db.Event.findById(id)
+      if (!event_index) {
         throw new Error("event not found");
       }
 
-      const updated_event = (db.events[event_index] = {
-        ...db.events[event_index],
-        ...data,
-      });
+      const updated_event = await db.Event.findByIdAndUpdate(id)
 
       return updated_event;
     },
-    deleteEvent: (parent, { id },{db,pubsub}) => {
-      const event_index = db.events.findIndex((event) => event.id == id);
-      if (event_index === -1) {
+    deleteEvent:async (parent, { id },{db,pubsub}) => {
+      const event_index = await db.Event.findById(id)
+      if (!event_index) {
         throw new Error("event not found");
       }
 
-      const deleted_event = db.events[event_index];
+      const deleted_event = await db.Event.findByIdAndDelete(id)
 
-      db.events.splice(event_index, 1);
 
       return deleted_event;
     },
-    deleteAllEvents: (_,__,{db,pubsub}) => {
-      const length = db.events.length;
-
-      db.events.splice(0, length);
+    deleteAllEvents: async(_,__,{db,pubsub}) => {
+      
+      const delete_events = await db.Event.deleteMany({})
 
       return {
-        count: length,
+        count: delete_events.deletedCount,
       };
     },
   }
