@@ -1,5 +1,5 @@
 export const Query ={
-    events: (_,__,{db}) => db.events,
+    events: async(_,__,{db}) => db.Event.find(),
     event: (parent, args,{db}) => db.events.find((event) => event.id == args.id),
 
     locations: (_,__,{db}) => db.locations,

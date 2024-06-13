@@ -3,7 +3,7 @@ import { createSchema,createYoga } from "graphql-yoga";
 import { PubSub } from "graphql-subscriptions";
 import typeDefs from "./graphql/type-defs";
 import resolvers from "./graphql/resolvers";
-import {db} from "./db";
+import {db as fakeData} from "./db";
 
 import {WebSocketServer} from "ws"
 
@@ -35,9 +35,9 @@ const yoga = createYoga({
     resolvers,
   }),
   context:{
-    db,
+    fakeData, // old db
     pubsub,
-    _db:{
+    db:{
       Event,
       Location,
       Participant,
