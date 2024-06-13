@@ -1,8 +1,18 @@
-import { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const UserSchema = new Schema({
     username:{
         type:String,
-        isrequired:true
-    }
+        isRequired:true
+    },
+    email:{
+        type:String,
+        isRequired:true
+    },
+    events:[{
+        type:Schema.Types.ObjectId,
+        ref:"Event"
+    }]
 })
+
+export default mongoose.model("User",UserSchema)

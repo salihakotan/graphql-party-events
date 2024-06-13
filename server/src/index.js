@@ -16,7 +16,7 @@ import mongodb from "./mongodb";
 
 mongodb()
 
-
+import User from "./models/User";
 
 
 const yoga = createYoga({
@@ -35,7 +35,8 @@ const yoga = createYoga({
     db,
     pubsub,
     _db:{
-
+      User,
+      
     }
    },
 });
