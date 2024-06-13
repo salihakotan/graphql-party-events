@@ -11,6 +11,14 @@ import {useServer} from "graphql-ws/lib/use/ws"
 
 const pubsub = new PubSub()
 
+import mongodb from "./mongodb";
+
+
+mongodb()
+
+
+
+
 const yoga = createYoga({
   
     graphiql:{
@@ -25,7 +33,10 @@ const yoga = createYoga({
   }),
   context:{
     db,
-    pubsub
+    pubsub,
+    _db:{
+
+    }
    },
 });
 
