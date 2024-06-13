@@ -1,3 +1,3 @@
 export const Participant={
-    user: (parent, args,{db}) => db.users.find((user) => user.id == parent.user_id),
+    user: async(parent, args,{db}) => await db.User.findById(parent.user),
   }
