@@ -1,8 +1,9 @@
 type Participant {
         id: ID!
-        user_id: ID!
-        event_id: ID!
+        # user_id: ID!
+        # event_id: ID!
         user: User!
+        event:Event!
       }
 
       input AddParticipantInput {
