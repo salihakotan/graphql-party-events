@@ -45,6 +45,7 @@ export const Mutation = {
       };
     },
 
+    
     addParticipant: async(parent, { data },{db,pubsub}) => {
       const newParticipant = new db.Participant({
         ...data
